@@ -1,6 +1,6 @@
-# Amigo X - CEDOES
+# Inimigo X - CEDOES
 
-Site de apresentação do Amigo X (Amigo Secreto) da CEDOES Pesquisa Clínica.
+Site de apresentação do Inimigo X da CEDOES Pesquisa Clínica.
 
 ## 🎨 Cores da Empresa
 
@@ -33,7 +33,7 @@ O site estará disponível em: http://localhost:3002
 - Fitras decorativas animadas
 - Design responsivo
 - Gradiente com as cores da empresa
-- Imagem do Amigo X integrada
+- Imagem do Inimigo X integrada
 
 ## 📦 Tecnologias
 

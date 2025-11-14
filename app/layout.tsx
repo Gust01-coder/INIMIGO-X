@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Amigo X - CEDOES",
-  description: "Apresentação do Amigo X CEDOES",
+  title: "Inimigo X - CEDOES",
+  description: "Apresentação do Inimigo X CEDOES",
 };
 
 export default function RootLayout({
