@@ -11,6 +11,8 @@ export default function Home() {
   const [showScrollButton, setShowScrollButton] = useState(true);
   const [isScrolling, setIsScrolling] = useState(false);
   const [currentRule, setCurrentRule] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -82,6 +84,31 @@ export default function Home() {
 
   const prevRule = () => {
     setCurrentRule((prev) => (prev - 1 + rules.length) % rules.length);
+  };
+
+  // Funções para swipe em mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+
+    if (distance > minSwipeDistance) {
+      // Swipe para a esquerda - próxima regra
+      nextRule();
+    }
+    if (distance < -minSwipeDistance) {
+      // Swipe para a direita - regra anterior
+      prevRule();
+    }
   };
 
   // Função para descer lentamente
@@ -480,7 +507,13 @@ export default function Home() {
             </motion.h2>
 
             {/* Carrossel com estilo 3D */}
-            <div className="relative pt-2 pb-8" style={{ perspective: '1000px' }}>
+            <div 
+              className="relative pt-2 pb-8" 
+              style={{ perspective: '1000px' }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <div className="relative h-[500px] md:h-[600px] flex items-center justify-center overflow-visible">
                 {/* Container dos slides */}
                 <div className="relative w-full max-w-5xl mx-auto h-full flex items-center" style={{ transformStyle: 'preserve-3d', isolation: 'isolate' }}>
@@ -559,10 +592,10 @@ export default function Home() {
                   })}
                 </div>
 
-                {/* Botões de Navegação nas laterais dos slides */}
+                {/* Botões de Navegação nas laterais dos slides - Ocultos em mobile */}
                 <button
                   onClick={prevRule}
-                  className="absolute left-0 md:left-[-60px] top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 font-bold px-4 py-2 rounded-lg shadow-lg transition-all duration-300 z-50"
+                  className="hidden md:block absolute left-[-60px] top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 font-bold px-4 py-2 rounded-lg shadow-lg transition-all duration-300 z-50"
                   style={{ zIndex: 50 }}
                 >
                   ANTERIOR
@@ -570,7 +603,7 @@ export default function Home() {
 
                 <button
                   onClick={nextRule}
-                  className="absolute right-0 md:right-[-60px] top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 font-bold px-4 py-2 rounded-lg shadow-lg transition-all duration-300 z-50"
+                  className="hidden md:block absolute right-[-60px] top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 font-bold px-4 py-2 rounded-lg shadow-lg transition-all duration-300 z-50"
                   style={{ zIndex: 50 }}
                 >
                   PRÓXIMO
