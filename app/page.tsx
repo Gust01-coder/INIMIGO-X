@@ -13,6 +13,7 @@ export default function Home() {
   const [currentRule, setCurrentRule] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -20,12 +21,19 @@ export default function Home() {
       width: window.innerWidth,
       height: window.innerHeight,
     });
+    
+    // Verificar se é mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
 
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,
         height: window.innerHeight,
       });
+      checkMobile();
     };
 
     window.addEventListener("resize", handleResize);
@@ -155,9 +163,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-[#003e7e] via-[#068b7d] to-[#46a896] relative overflow-hidden">
-      {/* Confetti Animation */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
-        {[...Array(50)].map((_, i) => {
+      {/* Confetti Animation - Oculto em mobile após abrir presente */}
+      {!(isMobile && isOpened) && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
+          {[...Array(50)].map((_, i) => {
           const startX = Math.random() * dimensions.width;
           const endX = Math.random() * dimensions.width;
           return (
@@ -191,7 +200,8 @@ export default function Home() {
             />
           );
         })}
-      </div>
+        </div>
+      )}
 
       {/* Ribbons Animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
@@ -345,8 +355,8 @@ export default function Home() {
                     transition={{ delay: 0.8 }}
                   />
                   
-                  {/* Confetti burst on reveal */}
-                  {[...Array(40)].map((_, i) => {
+                  {/* Confetti burst on reveal - Oculto em mobile */}
+                  {!isMobile && [...Array(40)].map((_, i) => {
                     const angle = (i / 40) * Math.PI * 2;
                     const distance = 200 + Math.random() * 200;
                     return (
